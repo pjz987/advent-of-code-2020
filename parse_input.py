@@ -5,5 +5,5 @@ def parse(path):
   input_list = []
   for line in lines:
     if line != '\n':
-      input_list.append(int(line.strip()))
+      input_list.append(line.strip())
   return input_list
