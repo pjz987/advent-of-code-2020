@@ -11,5 +11,11 @@ def parse(path):
 def parse2(path):
   with open(path, 'r') as raw:
     lines = raw.read().split('\n\n')
-    lines = [line.split() for line in lines]
+    lines = [line.split() for line in lines if line !='\n']
+    return lines
+
+def parse3(path):
+  with open(path, 'r') as raw:
+    lines = raw.read().split('\n\n')
+    lines = [line for line in lines if line]
     return lines
