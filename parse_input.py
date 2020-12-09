@@ -19,3 +19,12 @@ def parse3(path):
     lines = raw.read().split('\n\n')
     lines = [line for line in lines if line]
     return lines
+  
+def parse4(path):
+  with open(path, 'r') as raw:
+    lines = raw.readlines()
+  input_list = []
+  for line in lines:
+    if line != '\n':
+      input_list.append(int(line))
+  return input_list
