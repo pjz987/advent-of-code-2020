@@ -1,8 +1,5 @@
 from parse_input import parse_sort
 import time
-time
-# import sys
-# sys.setrecursionlimit(10001)
 
 adapters = parse_sort('19input.txt')
 adapters.append(0)
@@ -11,33 +8,22 @@ adapters.sort()
 
 # arrangements = []
 arrangements = 0
-arrangement_stack = []
+# arrangement_stack = []
 # iterations = 0
 time_start = time.time()
-def find_arrangements(arrangement=[], i=0):
-  # global iterations
-  # iterations += 1
-  # print(iterations)
-  global adapters
-  global arrangement_stack
+def find_arrangements(i=0):
   global arrangements
-  arrangement = arrangement.copy()
+  global adapters
+  # print(arrangements)
   adapter_i = adapters[i]
-  arrangement.append(adapter_i)
-  next_3 = [adapter for adapter in adapters[i+1:i+4] if adapter <= adapter_i + 3]
-  arrangement_stack.append(arrangement)
+  next_3 = adapters[i + 1:i + 4]
 
-  for adapter in next_3:
-    index = adapters.index(adapter)
-    find_arrangements(arrangement, index)
-    # arrangement_stack.pop()
-    
+  for j, adapter in enumerate(next_3):
+    if adapter <= adapter_i + 3:
+      find_arrangements(i + j + 1)
+
   if i == len(adapters) - 1:
     arrangements += 1
-    # arrangements.append(tuple(arrangement))
-    # arrangement_stack.pop()
-  
-  arrangement_stack.pop()
   
 find_arrangements()
 time_end = time.time()
