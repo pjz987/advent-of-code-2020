@@ -55,3 +55,7 @@ def parse_newlines(path):
   # if input_list[-1] == '\n':
   input_list.pop()
   return input_list
+
+def parse_string(path):
+  with open(path, 'r') as raw:
+    return raw.read().strip('\n')
