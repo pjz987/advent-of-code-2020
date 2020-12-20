@@ -1,6 +1,44 @@
 from parse_input import parse_newlines
 from random import shuffle
 
+class FullTile:
+  def __init__(self, raw, x, x_offset, y, y_offset, history):
+    self.x = x + x_offset
+    self.y = abs(y + y_offset - 11)
+    rows = raw.split('\n')
+    self.id = rows[0].strip('Tile :')
+    grid = rows[2:-1]
+    for i, row in enumerate(grid):
+      grid[i] = row[1:-1]
+    self.grid = grid
+    for transformation in history:
+      if transformation == 'flip_h':
+        self.flip_h()
+      elif transformation == 'flip_v':
+        self.flip_v()
+      elif transformation == 'rotate':
+        self.rotate()
+  
+  def flip_h(self):
+    for i, row in enumerate(self.grid):
+      self.grid[i] = row[::-1]
+  
+  def flip_v(self):
+    self.grid = self.grid[::-1]
+  
+  def rotate(self):
+    rotator = list(zip(*self.grid[::-1]))
+    for i, row in enumerate(rotator):
+      self.grid[i] == ''.join(row)
+  
+  def __repr__(self):
+    return f"""
+      id: {self.id}
+      x: {str(self.x)} y: {str(self.y)}
+      {str(self.grid)}
+    """
+
+
 class Tile:
   global tiles
   global defined_tiles
@@ -172,6 +210,8 @@ def grab_defined_tile(defined_tiles):
       return tile
 
 tiles_list = parse_newlines('39input.txt')
+# for tile in tiles_list:
+#   print(tile)
 tiles = [Tile(tile) for tile in tiles_list]
 defined_tiles = []
 starting_tile = tiles[0]
@@ -198,14 +238,30 @@ while len(defined_tiles) < len(tiles):
     y_high = new_tile.y if new_tile.y > y_high else y_high
     y_low = new_tile.y if new_tile.y < y_low else y_low
 
-corners = []
-for tile in defined_tiles:
-  if tile.x == x_high and tile.y in [y_high, y_low]:
-    corners.append(tile)
-  if tile.x == x_low and tile.y in [y_high, y_low]:
-    corners.append(tile)
+# corners = []
+# for tile in defined_tiles:
+#   if tile.x == x_high and tile.y in [y_high, y_low]:
+#     corners.append(tile)
+#   if tile.x == x_low and tile.y in [y_high, y_low]:
+#     corners.append(tile)
 
-product = 1
-for tile in corners:
-  product *= int(tile.id)
-print(product)
+# product = 1
+# for tile in corners:
+#   product *= int(tile.id)
+# print(product)
+# print(x_high + abs(x_low), x_low + abs(x_low))
+# print(y_high + abs(y_low), y_low + abs(y_low))
+
+full_tiles = [[None] * 12] * 12
+for tile in tiles:
+  for raw_tile in tiles_list:
+    if tile.id in raw_tile:
+      # print('here?')
+      full_tile = FullTile(raw_tile, tile.x, abs(x_low), tile.y, abs(y_low), tile.history)
+      full_tiles[full_tile.y][full_tile.x] = full_tile
+
+for i, row in enumerate(full_tiles):
+  for j, tile in enumerate(row):
+    print()
+    print(i, j)
+    print(tile.y, tile.x)
