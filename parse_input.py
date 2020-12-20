@@ -50,10 +50,8 @@ def parse_2d_array(path):
 
 def parse_newlines(path):
   with open(path, 'r') as raw:
-    full_file = raw.read()
+    full_file = raw.read().strip()
   input_list = full_file.split('\n\n')
-  # if input_list[-1] == '\n':
-  input_list.pop()
   return input_list
 
 def parse_string(path):
